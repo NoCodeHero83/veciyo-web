@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+
+# scratch asset-extraction / verification helpers
+_crop*.py
+_colors.py
+_shot.mjs
+/crops
+/shots
+dev.log
