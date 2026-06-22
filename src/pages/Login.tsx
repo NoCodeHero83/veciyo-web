@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
 export default function Login() {
+  const navigate = useNavigate()
+
   return (
     <MainLayout header="default" bg="page" center>
       <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
@@ -15,7 +17,12 @@ export default function Login() {
             {/* Form */}
             <form
               className="max-w-xl space-y-5"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={(e) => {
+                e.preventDefault()
+                navigate('/pre-check-in', {
+                  state: { name: 'Carlos Balazo', identification: '1616516' },
+                })
+              }}
             >
               <Input label="Correo:" type="email" placeholder="Ingrese su correo electrónico" />
               <Input
@@ -37,7 +44,15 @@ export default function Login() {
           </div>
 
           <div className="mt-12 flex flex-col items-center gap-6">
-            <Button type="submit" className="w-full max-w-md">
+            <Button
+              type="submit"
+              className="w-full max-w-md"
+              onClick={() =>
+                navigate('/pre-check-in', {
+                  state: { name: 'Carlos Balazo', identification: '1616516' },
+                })
+              }
+            >
               Iniciar Sesión
             </Button>
             <Link

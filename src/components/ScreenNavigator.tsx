@@ -4,11 +4,15 @@ import { ArrowLeftIcon, ArrowRightIcon, GridIcon, CloseIcon } from './icons'
 
 /** Temporary dev/review navigation — lets stakeholders jump between screens. */
 export const SCREENS = [
+  { path: '/invitacion', label: 'Invitación' },
   { path: '/login', label: 'Login' },
+  { path: '/pre-check-in', label: 'Pre Check-In' },
+  { path: '/companions', label: 'Acompañantes' },
+  { path: '/validation', label: 'Validación' },
+  { path: '/download-app', label: 'Descargar App' },
   { path: '/password-reset', label: 'Password Reset' },
   { path: '/visit-details', label: 'Visit Details' },
-  { path: '/pre-check-in', label: 'Pre Check-In' },
-  { path: '/temporary-guest-pre-check-in', label: 'Temporary Guest Pre Check-In' },
+  { path: '/temporary-guest-pre-check-in', label: 'Temporary Guest' },
   { path: '/admin-registration', label: 'Admin Registration' },
 ]
 

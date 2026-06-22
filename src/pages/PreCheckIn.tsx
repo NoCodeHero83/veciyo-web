@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import Input from '../components/Input'
 import Select from '../components/Select'
@@ -13,6 +14,15 @@ const ID_TYPES = [
 ]
 
 export default function PreCheckIn() {
+  const navigate = useNavigate()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigate('/companions', {
+      state: { name: 'Carlos Balazo', identification: '1616516' },
+    })
+  }
+
   return (
     <MainLayout header="default" bg="soft">
       <div className="mx-auto max-w-[960px] px-4 py-10 sm:px-6 lg:px-8">
@@ -23,7 +33,7 @@ export default function PreCheckIn() {
           Registro del responsable de la reservación
         </h2>
 
-        <form className="mt-7 space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="mt-7 space-y-6" onSubmit={handleSubmit}>
           <Input tone="soft" label="Nombres :" placeholder="Escriba su nombre" />
           <Input tone="soft" label="Apellidos :" placeholder="Apellido" />
 
