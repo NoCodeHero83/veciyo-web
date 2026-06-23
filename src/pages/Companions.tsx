@@ -123,31 +123,31 @@ export default function Companions() {
           Registro de acompañantes
         </h1>
 
-        <Card className="mt-6 px-6 py-5 sm:px-8 sm:py-6">
-          <p className="text-sm font-semibold text-ink/60">Huésped principal</p>
-          <p className="mt-0.5 text-lg font-bold text-ink">
+        <Card className="mt-6 px-6 py-7 sm:px-10 sm:py-8">
+          <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Huésped principal</p>
+          <h3 className="mt-1.5 text-lg font-bold text-ink">
             {mainGuest.name}
-          </p>
+          </h3>
           {mainGuest.identification && (
-            <p className="text-sm text-ink/50">
-              Identificación: {mainGuest.identification}
+            <p className="mt-1 text-sm font-semibold text-ink/70">
+              Identificación: <span className="text-ink">{mainGuest.identification}</span>
             </p>
           )}
         </Card>
 
         {companions.length > 0 && (
-          <div className="mt-8 space-y-3">
+          <div className="mt-8 space-y-4">
             <h2 className="text-lg font-bold text-ink">
               Acompañantes ({companions.length})
             </h2>
             {companions.map((c, i) => (
-              <Card key={i} className="flex items-center gap-4 px-6 py-4 sm:px-8">
+              <Card key={i} className="flex items-center gap-5 px-6 py-5 sm:px-10 sm:py-7">
                 <div className="min-w-0 flex-1">
-                  <p className="font-bold text-ink">
+                  <p className="text-lg font-bold text-ink">
                     {c.nombres} {c.apellidos}
                   </p>
-                  <p className="text-sm text-ink/50">
-                    Identificación: {c.identificacion}
+                  <p className="mt-1 text-sm font-semibold text-ink/70">
+                    Identificación: <span className="text-ink">{c.identificacion}</span>
                   </p>
                 </div>
                 <button

@@ -37,7 +37,7 @@ export default function Login() {
               <img
                 src="/assets/owl-walk.png"
                 alt="VeciYo"
-                className="w-44 rounded-xl sm:w-52"
+                className="w-56 rounded-xl sm:w-72"
                 draggable={false}
               />
             </div>

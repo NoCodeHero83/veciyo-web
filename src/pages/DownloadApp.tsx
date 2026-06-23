@@ -1,6 +1,5 @@
 import MainLayout from '../layouts/MainLayout'
 import Card from '../components/Card'
-import Button from '../components/Button'
 import { CheckIcon } from '../components/icons'
 
 export default function DownloadApp() {
@@ -26,21 +25,25 @@ export default function DownloadApp() {
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block"
+              className="inline-block transition-transform hover:scale-105"
             >
-              <Button type="button" className="w-56 py-3.5 text-base">
-                App Store
-              </Button>
+              <img
+                src="/assets/appstore.png"
+                alt="Descargar en App Store"
+                className="h-12 w-auto"
+              />
             </a>
             <a
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block"
+              className="inline-block transition-transform hover:scale-105"
             >
-              <Button type="button" className="w-56 py-3.5 text-base">
-                Google Play
-              </Button>
+              <img
+                src="/assets/Google_Play_Store_badge_EN.svg.webp"
+                alt="Descargar en Google Play"
+                className="h-12 w-auto"
+              />
             </a>
           </div>
         </Card>

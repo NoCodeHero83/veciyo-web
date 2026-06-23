@@ -36,7 +36,7 @@ export default function PasswordReset() {
               <img
                 src="/assets/owl-phone.png"
                 alt="VeciYo"
-                className="w-44 rounded-xl sm:w-52"
+                className="w-56 rounded-xl sm:w-72"
                 draggable={false}
               />
             </div>

@@ -10,28 +10,28 @@ export default function Invitation() {
   return (
     <MainLayout header="default" bg="page" center>
       <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
-        <Card className="mx-auto max-w-[640px] px-6 py-10 text-center sm:px-12 sm:py-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand/10">
-            <CheckIcon className="h-8 w-8 text-brand" />
+        <Card className="mx-auto max-w-[640px] px-8 py-12 text-center sm:px-14 sm:py-14">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brand/10">
+            <CheckIcon className="h-10 w-10 text-brand" />
           </div>
 
-          <h1 className="mt-6 font-display text-3xl font-extrabold text-ink sm:text-[34px]">
+          <h1 className="mt-8 font-display text-3xl font-extrabold text-ink sm:text-[34px]">
             Has sido invitado
           </h1>
 
-          <p className="mx-auto mt-4 max-w-md text-base text-ink/70">
+          <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-ink/70">
             El propietario te ha invitado a registrarte como huésped temporal en el edificio.
             Completa tu registro para poder acceder a las instalaciones.
           </p>
 
-          <div className="mt-4 rounded-lg bg-surface-soft px-5 py-4 text-left">
-            <p className="text-sm font-semibold text-ink/60">Edificio</p>
-            <p className="mt-0.5 text-base font-bold text-ink">Los Pinos</p>
+          <div className="mt-8 rounded-xl border border-line bg-surface-soft px-6 py-5 text-left shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Edificio</p>
+            <p className="mt-1 text-lg font-bold text-ink">Los Pinos</p>
           </div>
 
           <Button
             type="button"
-            className="mt-8 w-full max-w-sm py-3.5"
+            className="mt-10 w-full max-w-sm py-3.5"
             onClick={() => navigate('/login')}
           >
             Continuar

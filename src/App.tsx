@@ -9,28 +9,21 @@ import Invitation from './pages/Invitation'
 import Companions from './pages/Companions'
 import Validation from './pages/Validation'
 import DownloadApp from './pages/DownloadApp'
-import ScreenNavigator from './components/ScreenNavigator'
-
 export default function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/invitacion" replace />} />
-        <Route path="/invitacion" element={<Invitation />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/password-reset" element={<PasswordReset />} />
-        <Route path="/visit-details" element={<VisitDetails />} />
-        <Route path="/pre-check-in" element={<PreCheckIn />} />
-        <Route path="/companions" element={<Companions />} />
-        <Route path="/validation" element={<Validation />} />
-        <Route path="/download-app" element={<DownloadApp />} />
-        <Route path="/temporary-guest-pre-check-in" element={<TemporaryGuestPreCheckIn />} />
-        <Route path="/admin-registration" element={<AdminRegistration />} />
-        <Route path="*" element={<Navigate to="/invitacion" replace />} />
-      </Routes>
-
-      {/* Temporary floating navigation for development / stakeholder review */}
-      <ScreenNavigator />
-    </>
+    <Routes>
+      <Route path="/" element={<Navigate to="/invitacion" replace />} />
+      <Route path="/invitacion" element={<Invitation />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/password-reset" element={<PasswordReset />} />
+      <Route path="/visit-details" element={<VisitDetails />} />
+      <Route path="/pre-check-in" element={<PreCheckIn />} />
+      <Route path="/companions" element={<Companions />} />
+      <Route path="/validation" element={<Validation />} />
+      <Route path="/download-app" element={<DownloadApp />} />
+      <Route path="/temporary-guest-pre-check-in" element={<TemporaryGuestPreCheckIn />} />
+      <Route path="/admin-registration" element={<AdminRegistration />} />
+      <Route path="*" element={<Navigate to="/invitacion" replace />} />
+    </Routes>
   )
 }

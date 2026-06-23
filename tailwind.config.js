@@ -30,8 +30,8 @@ export default {
         success: '#1273D4',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'Helvetica', 'Arial', 'sans-serif'],
-        display: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'Inter', 'system-ui', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['Montserrat', 'Poppins', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         card: '16px',
