@@ -7,7 +7,7 @@ import Select from '../components/Select'
 import FileUploader from '../components/FileUploader'
 import Checkbox from '../components/Checkbox'
 import Button from '../components/Button'
-import { TrashIcon, PlusIcon } from '../components/icons'
+import { TrashIcon, PlusIcon, ClockIcon } from '../components/icons'
 import type { ValidationStatus } from '../components/ValidationCard'
 
 const VISIT_REASONS = [
@@ -124,15 +124,29 @@ export default function Companions() {
         </h1>
 
         <Card className="mt-6 px-6 py-7 sm:px-10 sm:py-8">
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Huésped principal</p>
-          <h3 className="mt-1.5 text-lg font-bold text-ink">
-            {mainGuest.name}
-          </h3>
-          {mainGuest.identification && (
-            <p className="mt-1 text-sm font-semibold text-ink/70">
-              Identificación: <span className="text-ink">{mainGuest.identification}</span>
-            </p>
-          )}
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+            <div className="min-w-0 sm:w-56">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Huésped principal</p>
+              <h3 className="mt-1.5 text-lg font-bold text-ink">
+                {mainGuest.name}
+              </h3>
+              {mainGuest.identification && (
+                <p className="mt-1 text-sm font-semibold text-ink/70">
+                  Identificación: <span className="text-ink">{mainGuest.identification}</span>
+                </p>
+              )}
+            </div>
+            <div className="flex flex-1 items-center sm:justify-start">
+              <div className="flex items-center gap-3">
+                <ClockIcon className="h-9 w-9 shrink-0 text-ink" />
+                <p className="text-sm leading-snug text-ink/80">
+                  Viernes 03/07/2025 al
+                  <br />
+                  Jueves 21/08/2025
+                </p>
+              </div>
+            </div>
+          </div>
         </Card>
 
         {companions.length > 0 && (
@@ -141,23 +155,33 @@ export default function Companions() {
               Acompañantes ({companions.length})
             </h2>
             {companions.map((c, i) => (
-              <Card key={i} className="flex items-center gap-5 px-6 py-5 sm:px-10 sm:py-7">
-                <div className="min-w-0 flex-1">
-                  <p className="text-lg font-bold text-ink">
-                    {c.nombres} {c.apellidos}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-ink/70">
-                    Identificación: <span className="text-ink">{c.identificacion}</span>
-                  </p>
+              <Card key={i} className="px-6 py-5 sm:px-10 sm:py-7">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-lg font-bold text-ink">
+                      {c.nombres} {c.apellidos}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-ink/70">
+                      Identificación: <span className="text-ink">{c.identificacion}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <ClockIcon className="h-9 w-9 shrink-0 text-ink" />
+                    <p className="text-sm leading-snug text-ink/80 whitespace-nowrap">
+                      Viernes 03/07/2025 al
+                      <br />
+                      Jueves 21/08/2025
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Eliminar ${c.nombres}`}
+                    onClick={() => removeCompanion(i)}
+                    className="shrink-0 text-ink hover:text-danger"
+                  >
+                    <TrashIcon className="h-6 w-6" />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  aria-label={`Eliminar ${c.nombres}`}
-                  onClick={() => removeCompanion(i)}
-                  className="shrink-0 text-ink hover:text-danger"
-                >
-                  <TrashIcon className="h-6 w-6" />
-                </button>
               </Card>
             ))}
           </div>
