@@ -26,10 +26,10 @@ export default function PreCheckIn() {
   return (
     <MainLayout header="default" bg="soft">
       <div className="mx-auto max-w-[960px] px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="font-display text-3xl font-extrabold leading-tight text-ink sm:text-[40px]">
+        <h1 className="font-display text-2xl font-extrabold leading-snug text-ink sm:text-[40px] sm:leading-tight">
           Bienvenido Carlos Balazo, este es el prechecking del edificio Los pinos
         </h1>
-        <h2 className="mt-6 font-display text-2xl font-bold text-ink sm:text-[28px]">
+        <h2 className="mt-4 font-display text-xl font-bold text-ink sm:mt-6 sm:text-[28px]">
           Registro del responsable de la reservación
         </h2>
 

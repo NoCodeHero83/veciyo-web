@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import Card from '../components/Card'
 import Button from '../components/Button'
-import { CheckIcon } from '../components/icons'
 
 export default function Invitation() {
   const navigate = useNavigate()
@@ -11,8 +10,13 @@ export default function Invitation() {
     <MainLayout header="default" bg="page" center>
       <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
         <Card className="mx-auto max-w-[640px] px-8 py-12 text-center sm:px-14 sm:py-14">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brand/10">
-            <CheckIcon className="h-10 w-10 text-brand" />
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-brand/10">
+            <img
+              src="/assets/owl-walk.png"
+              alt="VeciYo"
+              className="h-14 w-14 object-contain"
+              draggable={false}
+            />
           </div>
 
           <h1 className="mt-8 font-display text-3xl font-extrabold text-ink sm:text-[34px]">
@@ -24,9 +28,9 @@ export default function Invitation() {
             Completa tu registro para poder acceder a las instalaciones.
           </p>
 
-          <div className="mt-8 rounded-xl border border-line bg-surface-soft px-6 py-5 text-left shadow-soft">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Edificio</p>
-            <p className="mt-1 text-lg font-bold text-ink">Los Pinos</p>
+          <div className="mt-8 rounded-card border border-line bg-surface-soft px-7 py-5 text-center shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-widest text-ink/60">Edificio</p>
+            <p className="mt-1.5 text-lg font-bold text-ink">Los Pinos</p>
           </div>
 
           <Button

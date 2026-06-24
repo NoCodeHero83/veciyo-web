@@ -6,10 +6,15 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    height: 100%;
   }
   body {
     @apply font-sans text-ink bg-surface-page;
     margin: 0;
+    height: 100%;
+  }
+  #root {
+    height: 100%;
   }
   /* Remove number-input spinners for a cleaner field look */
   input[type='number']::-webkit-outer-spin-button,

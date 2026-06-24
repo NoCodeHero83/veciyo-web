@@ -14,6 +14,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/invitacion" replace />} />
       <Route path="/invitacion" element={<Invitation />} />
+      <Route path="/invitación" element={<Navigate to="/invitacion" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/password-reset" element={<PasswordReset />} />
       <Route path="/visit-details" element={<VisitDetails />} />
