@@ -1,69 +1,114 @@
-import { useNavigate, Link } from 'react-router-dom'
-import MainLayout from '../layouts/MainLayout'
-import Card from '../components/Card'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import BackgroundCarousel from '../components/BackgroundCarousel'
+
+const TRAVEL_IMAGES = [
+  'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1920&q=80',
+  'https://images.unsplash.com/photo-1568144622757-7c5e6e5c4a8b?w=1920&q=80',
+  'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80',
+  'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1920&q=80',
+  'https://images.unsplash.com/photo-1494500764479-0c8f07f2d12c?w=1920&q=80',
+]
 
 export default function Login() {
   const navigate = useNavigate()
+  const [view, setView] = useState<'login' | 'reset'>('login')
 
   return (
-    <MainLayout header="default" bg="page" center>
-      <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
-        <Card className="mx-auto max-w-[1040px] px-6 py-10 sm:px-12 sm:py-12">
-          <h1 className="text-2xl font-bold text-ink sm:text-[28px]">Iniciar sesion</h1>
+    <div className="relative flex min-h-screen flex-col">
+      <BackgroundCarousel images={TRAVEL_IMAGES} />
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-            {/* Form */}
-            <form
-              className="max-w-xl space-y-5"
-              onSubmit={(e) => {
-                e.preventDefault()
-                navigate('/pre-check-in', {
-                  state: { name: 'Carlos Balazo', identification: '1616516' },
-                })
-              }}
-            >
-              <Input label="Correo:" type="email" placeholder="Ingrese su correo electrónico" />
-              <Input
-                label="Contraseña"
-                type="password"
-                placeholder="Ingrese su correo contraseña"
-              />
-            </form>
-
-            {/* Mascot */}
-            <div className="order-first flex justify-center lg:order-none lg:pt-1">
-              <img
-                src="/assets/owl-walk.png"
-                alt="VeciYo"
-                className="w-56 rounded-xl sm:w-72"
-                draggable={false}
-              />
-            </div>
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="w-full max-w-[520px] rounded-2xl border border-white/20 bg-white/60 px-8 py-10 shadow-2xl shadow-black/10 backdrop-blur-2xl sm:px-12 sm:py-12">
+          <div className="flex justify-center">
+            <span className="font-display text-3xl font-extrabold tracking-tight text-ink">
+              VeciYo
+            </span>
           </div>
 
-          <div className="mt-12 flex flex-col items-center gap-6">
-            <Button
-              type="submit"
-              className="w-full max-w-md"
-              onClick={() =>
-                navigate('/pre-check-in', {
-                  state: { name: 'Carlos Balazo', identification: '1616516' },
-                })
-              }
-            >
-              Iniciar Sesión
-            </Button>
-            <Link
-              to="/password-reset"
-              className="text-sm font-medium text-ink underline underline-offset-2 hover:text-brand"
-            >
-              Recuperar la contraseña
-            </Link>
-          </div>
-        </Card>
+          {view === 'login' ? (
+            <>
+              <h1 className="mt-6 text-center text-2xl font-bold text-ink sm:text-[28px]">
+                Iniciar sesion
+              </h1>
+
+              <form
+                className="mt-8 space-y-5"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  navigate('/pre-check-in', {
+                    state: { name: 'Carlos Balazo', identification: '1616516' },
+                  })
+                }}
+              >
+                <Input label="Correo:" type="email" placeholder="Ingrese su correo electrónico" />
+                <Input
+                  label="Contraseña"
+                  type="password"
+                  placeholder="Ingrese su correo contraseña"
+                />
+
+                <Button type="submit" className="w-full py-3">
+                  Iniciar Sesión
+                </Button>
+              </form>
+
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setView('reset')}
+                  className="text-sm font-medium text-ink underline underline-offset-2 hover:text-brand"
+                >
+                  Recuperar la contraseña
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1 className="mt-6 text-center text-2xl font-bold text-ink sm:text-[28px]">
+                Cambio de contraseña
+              </h1>
+
+              <form
+                className="mt-8 space-y-5"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <Input
+                  label="Contraseña actual:"
+                  type="password"
+                  placeholder="Ingrese la contraseña recibida en el correo electrónico"
+                />
+                <Input
+                  label="Contraseña nueva"
+                  type="password"
+                  placeholder="Ingrese su contraseña nueva"
+                />
+                <Input
+                  label="Repita la Contraseña:"
+                  type="password"
+                  placeholder="Ingrese su contraseña nueva"
+                />
+
+                <Button type="submit" className="w-full py-3">
+                  Cambiar contraseña
+                </Button>
+              </form>
+
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setView('login')}
+                  className="text-sm font-medium text-ink underline underline-offset-2 hover:text-brand"
+                >
+                  Volver al inicio de sesión
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </MainLayout>
+    </div>
   )
 }

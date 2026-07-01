@@ -3,52 +3,29 @@ import { useLocation, useNavigate, Navigate } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import Card from '../components/Card'
 import Input from '../components/Input'
-import Select from '../components/Select'
-import FileUploader from '../components/FileUploader'
 import Checkbox from '../components/Checkbox'
+import FileUploader from '../components/FileUploader'
 import Button from '../components/Button'
-import { TrashIcon, PlusIcon, ClockIcon } from '../components/icons'
-import type { ValidationStatus } from '../components/ValidationCard'
+import { ClockIcon } from '../components/icons'
 
-const VISIT_REASONS = [
-  { value: 'vacaciones', label: 'Vacaciones' },
-  { value: 'trabajo', label: 'Trabajo' },
-  { value: 'familia', label: 'Familia' },
-  { value: 'negocios', label: 'Negocios' },
-  { value: 'otro', label: 'Otro' },
-]
+type CompanionStatus = 'pending' | 'reviewing' | 'approved'
 
-interface CompanionForm {
-  nombres: string
-  apellidos: string
-  identificacion: string
-  correo: string
-  motivo: string
-  telefono: string
-  direccionResidencia: string
-  direccionVivienda: string
+interface CompanionEntry {
+  email: string
+  isMinor: boolean
+  status: CompanionStatus
 }
 
-const EMPTY_FORM: CompanionForm = {
-  nombres: '',
-  apellidos: '',
-  identificacion: '',
-  correo: '',
-  motivo: 'vacaciones',
-  telefono: '',
-  direccionResidencia: '',
-  direccionVivienda: '',
+const STATUS_LABELS: Record<CompanionStatus, string> = {
+  pending: 'Pendiente',
+  reviewing: 'En revisión',
+  approved: 'Aprobado',
 }
 
-const STATUSES: ValidationStatus[] = [
-  'approved',
-  'reviewing',
-  'rejected',
-  'approved-manual',
-]
-
-function randomStatus(): ValidationStatus {
-  return STATUSES[Math.floor(Math.random() * STATUSES.length)]
+const STATUS_COLORS: Record<CompanionStatus, string> = {
+  pending: 'bg-gold/10 text-gold',
+  reviewing: 'bg-brand/10 text-brand',
+  approved: 'bg-success/10 text-success',
 }
 
 export default function Companions() {
@@ -59,61 +36,43 @@ export default function Companions() {
     identification?: string
   } | null
 
-  const [companions, setCompanions] = useState<
-    { nombres: string; apellidos: string; identificacion: string }[]
-  >([])
-  const [form, setForm] = useState<CompanionForm>(EMPTY_FORM)
-  const [showForm, setShowForm] = useState(false)
-  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [companions, setCompanions] = useState<CompanionEntry[]>([])
+  const [emailInput, setEmailInput] = useState('')
+  const [isMinor, setIsMinor] = useState(false)
+  const [minorModalIndex, setMinorModalIndex] = useState<number | null>(null)
 
   if (!mainGuest?.name) {
     return <Navigate to="/pre-check-in" replace />
   }
 
-  const updateField = (field: keyof CompanionForm, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
-
   const addCompanion = () => {
-    if (
-      !form.nombres.trim() ||
-      !form.apellidos.trim() ||
-      !form.identificacion.trim()
-    ) {
-      return
+    const email = emailInput.trim()
+    if (!email) return
+    setCompanions((prev) => [...prev, { email, isMinor, status: 'pending' }])
+    setEmailInput('')
+    if (isMinor) {
+      setMinorModalIndex(companions.length)
+      setIsMinor(false)
     }
-    setCompanions((prev) => [
-      ...prev,
-      {
-        nombres: form.nombres.trim(),
-        apellidos: form.apellidos.trim(),
-        identificacion: form.identificacion.trim(),
-      },
-    ])
-    setForm(EMPTY_FORM)
-    setShowForm(false)
   }
 
-  const removeCompanion = (index: number) => {
-    setCompanions((prev) => prev.filter((_, i) => i !== index))
+  const closeMinorModal = () => {
+    setMinorModalIndex(null)
   }
 
   const handleSubmit = () => {
-    const guestList = [
-      {
-        name: mainGuest.name!,
-        identification: mainGuest.identification || 'N/A',
-        status: randomStatus() as ValidationStatus,
-        isMain: true,
+    navigate('/validation', {
+      state: {
+        guests: [
+          {
+            name: mainGuest.name!,
+            identification: mainGuest.identification || 'N/A',
+            status: 'approved' as const,
+            isMain: true,
+          },
+        ],
       },
-      ...companions.map((c) => ({
-        name: `${c.nombres} ${c.apellidos}`,
-        identification: c.identificacion,
-        status: randomStatus() as ValidationStatus,
-        isMain: false,
-      })),
-    ]
-    navigate('/validation', { state: { guests: guestList } })
+    })
   }
 
   return (
@@ -123,6 +82,7 @@ export default function Companions() {
           Registro de acompañantes
         </h1>
 
+        {/* Responsible guest card */}
         <Card className="mt-6 px-6 py-7 sm:px-10 sm:py-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
             <div className="min-w-0 sm:w-56">
@@ -149,8 +109,37 @@ export default function Companions() {
           </div>
         </Card>
 
+        {/* Companion email input */}
+        <div className="mt-8 space-y-4">
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <Input
+                tone="soft"
+                placeholder="Correo electrónico del acompañante"
+                type="email"
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+              />
+            </div>
+            <Button
+              type="button"
+              className="px-6 py-3"
+              onClick={addCompanion}
+              disabled={!emailInput.trim()}
+            >
+              Agregar acompañante
+            </Button>
+          </div>
+          <Checkbox
+            label="¿Es menor de edad?"
+            checked={isMinor}
+            onChange={(e) => setIsMinor(e.target.checked)}
+          />
+        </div>
+
+        {/* Companion cards */}
         {companions.length > 0 && (
-          <div className="mt-8 space-y-4">
+          <div className="mt-6 space-y-4">
             <h2 className="text-lg font-bold text-ink">
               Acompañantes ({companions.length})
             </h2>
@@ -158,166 +147,28 @@ export default function Companions() {
               <Card key={i} className="px-6 py-5 sm:px-10 sm:py-7">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
                   <div className="min-w-0 flex-1">
-                    <p className="text-lg font-bold text-ink">
-                      {c.nombres} {c.apellidos}
+                    <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">
+                      Huésped acompañante
                     </p>
-                    <p className="mt-1 text-sm font-semibold text-ink/70">
-                      Identificación: <span className="text-ink">{c.identificacion}</span>
+                    <p className="mt-1 text-base font-semibold text-ink">
+                      {c.email}
                     </p>
+                    {c.isMinor && (
+                      <span className="mt-0.5 inline-block text-xs font-medium text-ink/50">
+                        Menor de edad
+                      </span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <ClockIcon className="h-9 w-9 shrink-0 text-ink" />
-                    <p className="text-sm leading-snug text-ink/80 whitespace-nowrap">
-                      Viernes 03/07/2025 al
-                      <br />
-                      Jueves 21/08/2025
-                    </p>
+                  <div className="shrink-0">
+                    <span
+                      className={`inline-block rounded-full px-4 py-1.5 text-sm font-bold ${STATUS_COLORS[c.status]}`}
+                    >
+                      {STATUS_LABELS[c.status]}
+                    </span>
                   </div>
-                  <button
-                    type="button"
-                    aria-label={`Eliminar ${c.nombres}`}
-                    onClick={() => removeCompanion(i)}
-                    className="shrink-0 text-ink hover:text-danger"
-                  >
-                    <TrashIcon className="h-6 w-6" />
-                  </button>
                 </div>
               </Card>
             ))}
-          </div>
-        )}
-
-        {showForm && (
-          <Card className="mt-6 px-6 py-6 sm:px-8 sm:py-8">
-            <h3 className="text-xl font-bold text-ink">
-              Nuevo acompañante
-            </h3>
-
-            <form
-              className="mt-5 space-y-5"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <Input
-                tone="soft"
-                strongLabel
-                label="Nombres :"
-                placeholder="Escriba su nombre"
-                value={form.nombres}
-                onChange={(e) => updateField('nombres', e.target.value)}
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Apellidos :"
-                placeholder="Apellido"
-                value={form.apellidos}
-                onChange={(e) => updateField('apellidos', e.target.value)}
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Número de identificación :"
-                placeholder="Entre su número de identificación"
-                value={form.identificacion}
-                onChange={(e) => updateField('identificacion', e.target.value)}
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Correo de contacto"
-                type="email"
-                placeholder="Ingrese su correo electrónico"
-                value={form.correo}
-                onChange={(e) => updateField('correo', e.target.value)}
-              />
-              <Select
-                tone="soft"
-                strongLabel
-                label="Seleccione el motivo de su visita:"
-                options={VISIT_REASONS}
-                value={form.motivo}
-                onChange={(e) => updateField('motivo', e.target.value)}
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Número de teléfono"
-                type="tel"
-                placeholder="Ingrese su número de teléfono"
-                value={form.telefono}
-                onChange={(e) => updateField('telefono', e.target.value)}
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Dirección de residencia"
-                placeholder="Ingrese su dirección de residencia actual"
-                value={form.direccionResidencia}
-                onChange={(e) =>
-                  updateField('direccionResidencia', e.target.value)
-                }
-              />
-              <Input
-                tone="soft"
-                strongLabel
-                label="Dirección de vivienda"
-                placeholder="Ingrese su dirección de vivienda actual"
-                value={form.direccionVivienda}
-                onChange={(e) => updateField('direccionVivienda', e.target.value)}
-              />
-
-              <div className="space-y-7 pt-2">
-                <FileUploader tone="soft" title="Subir el frente de la identificación" />
-                <FileUploader tone="soft" title="Sube la parte posterior de la identificación" />
-                <FileUploader tone="soft" title="Sube una foto de tu rostro" />
-              </div>
-
-              <Checkbox
-                label="Acepto los términos y condiciones."
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-              />
-
-              <div className="flex justify-center gap-4 pt-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="px-6 py-3"
-                  onClick={() => {
-                    setShowForm(false)
-                    setForm(EMPTY_FORM)
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  type="button"
-                  className="px-8 py-3"
-                  onClick={addCompanion}
-                  disabled={
-                    !form.nombres.trim() ||
-                    !form.apellidos.trim() ||
-                    !form.identificacion.trim()
-                  }
-                >
-                  Agregar acompañante
-                </Button>
-              </div>
-            </form>
-          </Card>
-        )}
-
-        {!showForm && (
-          <div className="mt-6 flex justify-center">
-            <Button
-              type="button"
-              variant="ghost"
-              className="gap-2 px-6 py-3 text-base"
-              onClick={() => setShowForm(true)}
-            >
-              <PlusIcon className="h-5 w-5" />
-              Agregar acompañante
-            </Button>
           </div>
         )}
 
@@ -331,6 +182,31 @@ export default function Companions() {
           </Button>
         </div>
       </div>
+
+      {/* Minor documentation modal */}
+      {minorModalIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-lg rounded-card bg-white px-6 py-8 shadow-card sm:px-8">
+            <h3 className="text-lg font-bold text-ink">
+              Documentación para menor de edad
+            </h3>
+            <p className="mt-1 text-sm text-ink/60">
+              Por favor adjunta la carta de potestad o tutela notarial correspondiente.
+            </p>
+            <div className="mt-5">
+              <FileUploader
+                tone="soft"
+                title="Carta de potestad / tutela notarial"
+              />
+            </div>
+            <div className="mt-6 flex justify-end">
+              <Button type="button" onClick={closeMinorModal}>
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </MainLayout>
   )
 }
